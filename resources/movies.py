@@ -5,14 +5,21 @@ from playhouse.shortcuts import model_to_dict
 movie = Blueprint('movies', 'movie')
 
 @movie.route('/', methods=["GET"])
-def get_all_movies():
+def get_hundred_movies():
     ## find the movies and change each one to a dictionary into a new array
     try:
-        movies = [model_to_dict(movie) for movie in models.Movie.select()]
-        print(movies)
+        # movies = [model_to_dict(movie) for movie in models.Movie.select().where(models.Movie.year == 1901)]
+        # print(movies)
+        movies = [model_to_dict(movie) for movie in models.Movie.select().limit(100)]
         return jsonify(data=movies, status={"code": 200, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
+
+# @movie.route('/year/<num>', methods=["GET", "POST"])
+# def get_search_results(num):
+#     print(num, 'this is the query')
+#     movies = models.Movie.select().where(models.Movie.year == num)
+#     print(movies)
 
 @movie.route('/', methods=["POST"])
 def create_movies():
@@ -21,7 +28,6 @@ def create_movies():
     new_movie = models.Movie.create(**body)
     movie_data = model_to_dict(new_movie)
     return jsonify(data=movie_data, status={'code': 200, 'message': 'Success'})
-
 
 @movie.route('/<id>', methods=["GET"])
 def get_one_movie(id):
