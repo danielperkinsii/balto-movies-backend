@@ -8,11 +8,18 @@ movie = Blueprint('movies', 'movie')
 def get_hundred_movies():
     ## find the movies and change each one to a dictionary into a new array
     try:
+        # movies = [model_to_dict(movie) for movie in models.Movie.select().where(models.Movie.year == 1901)]
+        # print(movies)
         movies = [model_to_dict(movie) for movie in models.Movie.select().limit(100)]
-        print(movies)
         return jsonify(data=movies, status={"code": 200, "message": "Success"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
+
+@movie.route('/year/<num>', methods=["GET", "POST"])
+def get_search_results(num):
+    print(num, 'this is the query')
+    movies = models.Movie.select().where(models.Movie.year == num)
+    print(movies)
 
 @movie.route('/', methods=["POST"])
 def create_movies():
