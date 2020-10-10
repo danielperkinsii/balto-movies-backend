@@ -15,11 +15,11 @@ def get_hundred_movies():
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
 
-@movie.route('/year/<num>', methods=["GET", "POST"])
-def get_search_results(num):
-    print(num, 'this is the query')
-    movies = models.Movie.select().where(models.Movie.year == num)
-    print(movies)
+# @movie.route('/year/<num>', methods=["GET", "POST"])
+# def get_search_results(num):
+#     print(num, 'this is the query')
+#     movies = models.Movie.select().where(models.Movie.year == num)
+#     print(movies)
 
 @movie.route('/', methods=["POST"])
 def create_movies():
